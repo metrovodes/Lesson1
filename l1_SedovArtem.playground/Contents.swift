@@ -41,3 +41,15 @@ let square: Double = cathet1 * cathet2 / 2 // Находим площадь
 let perimeter: Double = cathet1 + cathet2 + hypotenuse // Находим периметр
 
 print("\nКатеты треугольника равны \(String(format: "%.2f", cathet1)) см и \(String(format: "%.2f", cathet2)) см.\nГипотенуза равна \(String(format: "%.2f", hypotenuse)) см.\nПлощадь треугольника равна \(String(format: "%.2f", square)) см2.\nПериметр треугольника равен \(String(format: "%.2f", perimeter)) ")
+
+// Задание № 3. Расчет дохода по банковскому вкладу
+
+var startSum: Double = 10000
+let percent:Double = 5
+
+for _ in 1 ... 5 {
+    startSum *= (100 + percent) / 100
+}
+
+print("\nСумма вклада через пять лет будет равна \(String(format: "%.2f", startSum)) у.е.")
+
