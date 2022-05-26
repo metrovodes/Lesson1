@@ -28,3 +28,16 @@ if D < 0 {
         
     }
 }
+
+// Задание № 2. Поиск параметров треугольника (площадь, периметр и гипотенузу) по данным катетам
+
+let cathet1: Double = 4.2
+let cathet2: Double = 3.6
+
+let hypotenuse: Double = sqrt(cathet1 * cathet1 + cathet2 * cathet2) //Находим гипотенузу
+
+let square: Double = cathet1 * cathet2 / 2 // Находим площадь
+
+let perimeter: Double = cathet1 + cathet2 + hypotenuse // Находим периметр
+
+print("\nКатеты треугольника равны \(String(format: "%.2f", cathet1)) см и \(String(format: "%.2f", cathet2)) см.\nГипотенуза равна \(String(format: "%.2f", hypotenuse)) см.\nПлощадь треугольника равна \(String(format: "%.2f", square)) см2.\nПериметр треугольника равен \(String(format: "%.2f", perimeter)) ")
