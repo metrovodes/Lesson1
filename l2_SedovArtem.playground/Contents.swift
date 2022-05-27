@@ -39,3 +39,20 @@ func checkElements (arrayToCheck a: [Int]) -> Array<Int> {
     return newNumbers
 }
 
+// Задание № 5. Добавить в существующий массив 50 чисел Фибоначчи
+
+var fibonacciArray: [Int] = [1, 1]
+
+func sumFib(array a: inout [Int]) -> Void{
+    if(a.count > 1){
+        a.append(a[a.count-1] + a[a.count-2])
+    }else{
+        print("Ошибка, остутствует необходимое число элементов")
+    }
+}
+
+for _ in 1...50 {
+    sumFib(array: &fibonacciArray)
+}
+
+print(fibonacciArray)
