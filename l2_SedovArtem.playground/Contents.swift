@@ -23,3 +23,7 @@ func divideThree(number n : Int) -> Bool {
     return res
 }
 
+// Задание № 3. Создание массива  возрастающих чисел, состоящего из 100 элементов
+
+var numbers: [Int] = Array(1...100)
+
