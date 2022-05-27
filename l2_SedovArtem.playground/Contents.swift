@@ -55,4 +55,32 @@ for _ in 1...50 {
     sumFib(array: &fibonacciArray)
 }
 
-print(fibonacciArray)
+// Задание № 6. Заполнить массив из 100 элементов различными простыми числами
+
+
+//Первый вариант решения задачи
+var array: [Int] = [2]
+
+func checkSimple(number n: Int) -> Bool{
+    var status: Bool = true
+    for i in 2...n-1{
+        if n % i == 0 {
+            status = false
+        }
+    }
+    return status
+}
+
+
+while(array.count<100){
+    var last: Int = array[array.count-1]
+    var counter: Int = 1
+    while(last == array[array.count-1]){
+        if(checkSimple(number: last + counter)){
+            array.append(last+counter)
+            counter = 1
+        }else{
+            counter += 1
+        }
+    }
+}
