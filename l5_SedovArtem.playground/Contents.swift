@@ -86,7 +86,7 @@ extension TrunkCar{
         switch self.currentLoad + w{
         case self.trailerMaxLoad...:
             self.currentLoad = self.trailerMaxLoad
-        case ...self.currentLoad:
+        case ...0:
             self.currentLoad = 0
         default:
             self.currentLoad += w
@@ -148,3 +148,21 @@ lexus.windowsOpenClose(.opened)
 lexus.accelerate(speed: 230)
 
 print(lexus)
+
+var kamaz = trunkCar(name: "KAMAZ", releaseYear: 2005, trailerMLoad: 15000)
+
+kamaz.engineOnOff(.on)
+kamaz.windowsOpenClose(.opened)
+kamaz.loadTrailer(weight: 14780)
+kamaz.windowsOpenClose(.closed)
+
+print(kamaz)
+
+var man = trunkCar(name: "MAN", releaseYear: 2015, trailerMLoad: 40000)
+
+man.engineOnOff(.on)
+man.loadTrailer(weight: 30000)
+man.windowsOpenClose(.opened)
+man.loadTrailer(weight: -1000)
+
+print(man)
