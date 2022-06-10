@@ -7,9 +7,9 @@ enum engineStatus: CustomStringConvertible{
     var description: String{
         switch self{
         case .on:
-            return "Двигатель запущен"
+            return "Двигатель запущен."
         case.off:
-            return "Двигатель выключен"
+            return "Двигатель выключен."
         }
     }
 }
@@ -21,9 +21,9 @@ enum windowsStatus: CustomStringConvertible{
     var description: String{
         switch self{
         case .opened:
-            return "Окна открыты"
+            return "Окна открыты."
         case .closed:
-            return "Окна закрыты"
+            return "Окна закрыты."
         }
     }
 }
@@ -111,21 +111,7 @@ class trunkCar: TrunkCar{
 
 extension trunkCar: CustomStringConvertible{
     var description: String{
-        let es: String
-        switch self.engine {
-        case .off:
-            es = "Двигатель выключен."
-        case .on:
-            es = "Двигатель запущен."
-        }
-        let ws: String
-        switch self.windows{
-        case .closed:
-            ws = "Окна закрыты."
-        case .opened:
-            ws = "Окна открыты."
-        }
-        return "Грузовик \(self.brand). \(self.year) года выпуска.\n\(es) \(ws)\nТекущая загрузка кузова: \(self.currentLoad) из \(self.trailerMaxLoad) кг."
+        return "Грузовик \(self.brand). \(self.year) года выпуска.\n\(self.engine) \(self.windows)\nТекущая загрузка кузова: \(self.currentLoad) из \(self.trailerMaxLoad) кг."
     }
 }
 
@@ -145,21 +131,6 @@ class sportCar: SportCar{
 
 extension sportCar: CustomStringConvertible{
     var description: String{
-        let es: engineStatus, ws: windowsStatus
-        switch self.engine{
-        case.off:
-            es = "Двигатель выключен"
-        case.on:
-            es = "Двигатель запущен"
-        }
-        
+        return "Спорткар \(self.brand), произведен в \(self.year) году.\n\(self.engine) \(self.windows)\nТекущая скорость - \(self.currentSpeed) км/ч.\n Максимальная скорость - \(self.topSpeed)км/ч"
     }
 }
-
-var man = trunkCar(name: "Man", releaseYear: 2006, trailerMLoad: 500)
-
-man.loadTrailer(weight: 222)
-man.windowsOpenClose(.opened)
-man.engineOnOff(.on)
-
-print(man)
