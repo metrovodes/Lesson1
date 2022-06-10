@@ -1,13 +1,31 @@
 import Foundation
 
-enum engineStatus{
+enum engineStatus: CustomStringConvertible{
     case on
     case off
+    
+    var description: String{
+        switch self{
+        case .on:
+            return "Двигатель запущен"
+        case.off:
+            return "Двигатель выключен"
+        }
+    }
 }
 
-enum windowsStatus{
+enum windowsStatus: CustomStringConvertible{
     case opened
     case closed
+    
+    var description: String{
+        switch self{
+        case .opened:
+            return "Окна открыты"
+        case .closed:
+            return "Окна закрыты"
+        }
+    }
 }
 
 protocol Car{
@@ -108,6 +126,33 @@ extension trunkCar: CustomStringConvertible{
             ws = "Окна открыты."
         }
         return "Грузовик \(self.brand). \(self.year) года выпуска.\n\(es) \(ws)\nТекущая загрузка кузова: \(self.currentLoad) из \(self.trailerMaxLoad) кг."
+    }
+}
+
+class sportCar: SportCar{
+    var brand: String
+    var year: Int
+    var windows: windowsStatus = .closed
+    var engine: engineStatus = .off
+    var currentSpeed: Int = 0
+    var topSpeed: Int
+    init(name: String, releaseYear: Int, maxSpeed: Int){
+        self.brand = name
+        self.year = releaseYear
+        self.topSpeed = maxSpeed
+    }
+}
+
+extension sportCar: CustomStringConvertible{
+    var description: String{
+        let es: engineStatus, ws: windowsStatus
+        switch self.engine{
+        case.off:
+            es = "Двигатель выключен"
+        case.on:
+            es = "Двигатель запущен"
+        }
+        
     }
 }
 
