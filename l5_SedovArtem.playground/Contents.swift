@@ -111,7 +111,7 @@ class trunkCar: TrunkCar{
 
 extension trunkCar: CustomStringConvertible{
     var description: String{
-        return "Грузовик \(self.brand). \(self.year) года выпуска.\n\(self.engine) \(self.windows)\nТекущая загрузка кузова: \(self.currentLoad) из \(self.trailerMaxLoad) кг."
+        return "Грузовик \(self.brand). \(self.year) года выпуска.\n\(self.engine) \(self.windows)\nТекущая загрузка кузова: \(self.currentLoad) из \(self.trailerMaxLoad) кг.\n"
     }
 }
 
@@ -131,6 +131,20 @@ class sportCar: SportCar{
 
 extension sportCar: CustomStringConvertible{
     var description: String{
-        return "Спорткар \(self.brand), произведен в \(self.year) году.\n\(self.engine) \(self.windows)\nТекущая скорость - \(self.currentSpeed) км/ч.\n Максимальная скорость - \(self.topSpeed)км/ч"
+        return "Спорткар \(self.brand), произведен в \(self.year) году.\n\(self.engine) \(self.windows)\nТекущая скорость - \(self.currentSpeed) км/ч.\n Максимальная скорость - \(self.topSpeed)км/ч\n"
     }
 }
+
+var honda = sportCar(name: "Honda Civic", releaseYear: 2014, maxSpeed: 210)
+
+honda.engineOnOff(.on)
+honda.accelerate(speed: 100)
+print(honda)
+
+var lexus = sportCar(name: "Lexus ES", releaseYear: 2018, maxSpeed: 276)
+
+lexus.engineOnOff(.on)
+lexus.windowsOpenClose(.opened)
+lexus.accelerate(speed: 230)
+
+print(lexus)
