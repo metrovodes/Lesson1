@@ -1,15 +1,38 @@
 import Foundation
 
-enum door{
+enum door: CustomStringConvertible{
     case opened
     case closed
+    
+    var description: String {
+        switch self{
+        case .opened:
+            return "Дверца открыта"
+        case .closed:
+            return "Дверца закрыта"
+        }
+    }
+        
 }
 
-enum mode{
+enum mode: CustomStringConvertible{
     case wash
     case rinsing
     case spin
     case off
+    
+    var description: String{
+        switch self{
+        case .wash:
+            return "Стирка"
+        case .off:
+            return "Выключена"
+        case .spin:
+            return "Отжим"
+        case .rinsing:
+            return "Полоскание"
+        }
+    }
 }
 
 enum washerErrors: Error{
@@ -22,9 +45,18 @@ enum washerErrors: Error{
     case empty
 }
 
-enum washerStatus{
+enum washerStatus:CustomStringConvertible{
     case busy
     case free
+    
+    var description: String{
+        switch self{
+        case .busy:
+            return "Режим запущен"
+        case .free:
+            return "Режим не запущен"
+        }
+    }
 }
 
 class Washer{
