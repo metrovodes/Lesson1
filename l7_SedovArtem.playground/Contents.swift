@@ -19,6 +19,7 @@ enum washerErrors: Error{
     case maxLoad
     case wrongMode
     case busy
+    case empty
 }
 
 enum washerStatus{
@@ -32,7 +33,7 @@ class Washer{
     var currentLoad: Int = 0
     var doorStatus: door = .closed
     var mode: mode = .off
-    var status: washerStatus = .free
+    private var status: washerStatus = .free
     
     init(brand: String, maxLoad: Int){
         self.brand = brand
@@ -44,10 +45,31 @@ class Washer{
             throw washerErrors.noPower
         }
         
-        guard self.status == .free{
+        guard self.status == .free else{
             throw washerErrors.busy
         }
         
         self.doorStatus = a
     }
+    
+    func changeMode(_ a: mode) throws -> mode{
+        guard self.status == .free else{
+            throw washerErrors.busy
+        }
+        
+        switch a{
+        case .off:
+            self.mode = .off
+        case .rinsing:
+            self.mode = .rinsing
+        case .spin:
+            self.mode = .spin
+        case .wash:
+            self.mode = .wash
+        }
+        
+        return a
+    }
+    
+    
 }
