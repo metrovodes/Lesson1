@@ -15,18 +15,29 @@ enum door: CustomStringConvertible{
         
 }
 
-enum mode: CustomStringConvertible{
+enum washerPower: CustomStringConvertible{
+    case on
+    case off
+    
+    var description: String{
+        switch self{
+        case .off:
+            return "Машинка выключена"
+        case .on:
+            return "Машинка включена"
+        }
+    }
+}
+
+enum washerMode: CustomStringConvertible{
     case wash
     case rinsing
     case spin
-    case off
     
     var description: String{
         switch self{
         case .wash:
             return "Стирка"
-        case .off:
-            return "Выключена"
         case .spin:
             return "Отжим"
         case .rinsing:
@@ -35,7 +46,7 @@ enum mode: CustomStringConvertible{
     }
 }
 
-enum washerErrors: Error{
+enum washerErrors: Error, CustomStringConvertible{
     case noPower
     case doorClosed
     case doorOpened
@@ -43,6 +54,25 @@ enum washerErrors: Error{
     case wrongMode
     case busy
     case empty
+    
+    var description: String{
+        switch self{
+        case .noPower:
+            return "Необходимо включить машинку"
+        case .doorOpened:
+            return "Необходимо закрыть дверцу"
+        case .doorClosed:
+            return "Необходимо открыть дверцу"
+        case .maxLoad:
+            return "Машинка уже загружена полностью"
+        case .wrongMode:
+            return ""
+        case .busy:
+            return "Машинка занята, необходимо выключить режим"
+        case .empty:
+            return "Машинка пустая, невозможно включить режим"
+        }
+    }
 }
 
 enum washerStatus:CustomStringConvertible{
@@ -59,13 +89,14 @@ enum washerStatus:CustomStringConvertible{
     }
 }
 
-class Washer{
+class Washer: CustomStringConvertible{
     let brand: String
     let maxLoad: Int
     var currentLoad: Int = 0
     var doorStatus: door = .closed
-    var mode: mode = .off
-    private var status: washerStatus = .free
+    var mode: washerMode?
+    var status: washerStatus = .free
+    private var power: washerPower = .off
     
     init(brand: String, maxLoad: Int){
         self.brand = brand
@@ -73,25 +104,22 @@ class Washer{
     }
     
     func doorOpenClose(_ a: door) throws{
-        guard self.mode == .off else {
+        guard self.power != .off else {
             throw washerErrors.noPower
         }
         
         guard self.status == .free else{
             throw washerErrors.busy
         }
-        
         self.doorStatus = a
+        print(a)
     }
     
-    func changeMode(_ a: mode) throws -> mode{
+    func changeMode(_ a: washerMode) throws -> washerMode{
         guard self.status == .free else{
             throw washerErrors.busy
         }
-        
         switch a{
-        case .off:
-            self.mode = .off
         case .rinsing:
             self.mode = .rinsing
         case .spin:
@@ -99,7 +127,7 @@ class Washer{
         case .wash:
             self.mode = .wash
         }
-        
+        print(self.mode!)
         return a
     }
     
@@ -107,12 +135,12 @@ class Washer{
         switch self.status {
         case .busy:
             self.status = .free
+            self.doorStatus = .opened
         case .free:
-            guard self.mode == .off else{
+            guard self.power == .on else{
                 throw washerErrors.noPower
             }
-            
-            guard self.doorStatus == .opened else{
+            guard self.doorStatus != .opened else{
                 throw washerErrors.doorOpened
             }
             
@@ -122,6 +150,22 @@ class Washer{
             
             self.status = .busy
         }
+        print(self.status)
+    }
+    
+    func onOff() throws{
+        switch self.power{
+        case .on:
+            guard self.status != .busy else{
+                throw washerErrors.busy
+            }
+            self.mode = nil
+            self.power = .off
+        case .off:
+            self.power = .on
+            self.mode = .wash
+        }
+        print(self.power)
     }
     
     func load(_ a: Int) throws -> Int{
@@ -141,6 +185,29 @@ class Washer{
         default:
             self.currentLoad = 0
         }
+        
+        if a > 0{
+            print("В машинку загружено \(a) кг\n")
+        }else {
+            print("Из машинки вытащили \(a) кг\n")
+        }
         return self.currentLoad
     }
+    
+    
+    var description: String{
+        let status: String
+        if self.power == .off{
+            status = "Машинка выключена\n"
+        }else {
+            if self.mode != nil{
+                status = "Машинка включена. Режим: \(self.mode!). \(self.status)\n"
+            }else {
+                status = "Машинка включена. Режим: #undefined#\n"
+            }
+        }
+        
+        return "\nМашинка \(self.brand).\nМаксимальная загрузка - \(self.maxLoad).\nТекущая загрузка - \(self.currentLoad).\n_______\n\(status)\(self.doorStatus)\n"
+    }
+    
 }
