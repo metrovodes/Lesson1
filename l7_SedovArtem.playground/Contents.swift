@@ -71,5 +71,24 @@ class Washer{
         return a
     }
     
-    
+    func startStop() throws{
+        switch self.status {
+        case .busy:
+            self.status = .free
+        case .free:
+            guard self.mode == .off else{
+                throw washerErrors.noPower
+            }
+            
+            guard self.doorStatus == .opened else{
+                throw washerErrors.doorOpened
+            }
+            
+            guard self.currentLoad != 0 else{
+                throw washerErrors.empty
+            }
+            
+            self.status = .busy
+        }
+    }
 }
