@@ -91,4 +91,24 @@ class Washer{
             self.status = .busy
         }
     }
+    
+    func load(_ a: Int) throws -> Int{
+        guard self.doorStatus == .opened else{
+            throw washerErrors.doorClosed
+        }
+        
+        guard self.currentLoad != self.maxLoad else {
+            throw washerErrors.maxLoad
+        }
+        
+        switch a + self.currentLoad{
+        case self.maxLoad...:
+            self.currentLoad = self.maxLoad
+        case 0...self.maxLoad:
+            self.currentLoad += a
+        default:
+            self.currentLoad = 0
+        }
+        return self.currentLoad
+    }
 }
