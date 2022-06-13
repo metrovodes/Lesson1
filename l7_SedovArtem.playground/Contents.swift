@@ -51,26 +51,23 @@ enum washerErrors: Error, CustomStringConvertible{
     case doorClosed
     case doorOpened
     case maxLoad
-    case wrongMode
     case busy
     case empty
     
     var description: String{
         switch self{
         case .noPower:
-            return "Необходимо включить машинку"
+            return "\nОшибка!\nНеобходимо включить машинку"
         case .doorOpened:
-            return "Необходимо закрыть дверцу"
+            return "\nОшибка!\nНеобходимо закрыть дверцу"
         case .doorClosed:
-            return "Необходимо открыть дверцу"
+            return "\nОшибка!\nНеобходимо открыть дверцу"
         case .maxLoad:
-            return "Машинка уже загружена полностью"
-        case .wrongMode:
-            return ""
+            return "\nОшибка!\nМашинка уже загружена полностью"
         case .busy:
-            return "Машинка занята, необходимо выключить режим"
+            return "\nОшибка!\nМашинка занята, необходимо выключить режим"
         case .empty:
-            return "Машинка пустая, невозможно включить режим"
+            return "\nОшибка!\nМашинка пустая, невозможно включить режим"
         }
     }
 }
@@ -119,6 +116,11 @@ class Washer: CustomStringConvertible{
         guard self.status == .free else{
             throw washerErrors.busy
         }
+        
+        guard self.power == .on else{
+            throw washerErrors.noPower
+        }
+        
         switch a{
         case .rinsing:
             self.mode = .rinsing
@@ -211,3 +213,72 @@ class Washer: CustomStringConvertible{
     }
     
 }
+
+func washerOnOff(_ w: Washer) throws {
+    do {
+        try w.onOff()
+    } catch washerErrors.busy{
+        print(washerErrors.busy)
+    }
+}
+
+func washerDoorOpenClose(_ w: Washer, action: door) throws {
+    do {
+        try w.doorOpenClose(action)
+    } catch washerErrors.busy {
+        print(washerErrors.busy)
+    } catch washerErrors.noPower{
+        print(washerErrors.noPower)
+    }
+}
+
+func washerChangeMode(_ w: Washer, mode: washerMode) throws{
+    do {
+        try w.changeMode(mode)
+    } catch washerErrors.busy {
+        print(washerErrors.busy)
+    } catch washerErrors.noPower {
+        print(washerErrors.noPower)
+    }
+
+}
+
+func washerStartStop(_ w: Washer) throws{
+    do{
+        try w.startStop()
+    } catch washerErrors.noPower {
+        print(washerErrors.noPower)
+    } catch washerErrors.doorOpened {
+        print(washerErrors.doorOpened)
+    } catch washerErrors.empty {
+        print(washerErrors.empty)
+    }
+}
+
+func washerLoad(_ w: Washer, load: Int) throws{
+    do {
+        try w.load(load)
+    } catch washerErrors.doorClosed {
+        print(washerErrors.doorClosed)
+    } catch washerErrors.maxLoad {
+        print(washerErrors.maxLoad)
+    }
+}
+
+var samsung = Washer(brand: "Samsung", maxLoad: 12)
+
+try washerOnOff(samsung)
+
+try washerChangeMode(samsung, mode: .rinsing)
+
+try washerDoorOpenClose(samsung, action: .opened)
+
+try washerLoad(samsung, load: 2)
+
+try washerDoorOpenClose(samsung, action: .closed)
+
+try washerStartStop(samsung)
+
+try washerDoorOpenClose(samsung, action: .opened)
+
+print(samsung)
